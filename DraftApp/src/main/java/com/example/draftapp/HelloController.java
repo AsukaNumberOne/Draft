@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
@@ -51,22 +49,18 @@ public class HelloController {
     private TextArea textArea;
 
     @FXML
-    private Button upgradeButton;
+    private Text checkAllFolders;
 
-    static ObservableList<String> rowList = FXCollections.observableArrayList();
-    @FXML
-    private static ListView<String> allFolders = new ListView<>(rowList);
 
 
     private static final String PATH = System.getProperty("user.dir") + "\\src\\main\\resources\\txt-folders";
 
-    public static void getAllPath(String path) {
+    public void getAllPath(String path) {
         File dir = new File(path);
         if (dir.listFiles() != null) {
             for (File file : Objects.requireNonNull(dir.listFiles())) {
-                rowList.add(file.getName());
+                checkAllFolders.setText(checkAllFolders.getText() + file.getName() + "\n");
             }
-            allFolders.setItems(rowList);
         }
     }
 
@@ -75,7 +69,7 @@ public class HelloController {
         File dir = new File(PATH);
         for (File file : Objects.requireNonNull(dir.listFiles())) {
             if (file.isFile() && file.getName().equals(e))
-                s = file.getName();
+                s = file.getName() + "\n";
         }
         return s.equals(e);
     }
@@ -83,10 +77,8 @@ public class HelloController {
 
     @FXML
     void initialize() {
+        getAllPath(PATH);
         //===================================================
-        upgradeButton.setOnAction(actionEvent -> {
-            getAllPath(PATH);
-        });
         //===================================================
         Alert alert = new Alert(Alert.AlertType.INFORMATION);//---
         alert.setTitle("Ошибка в названии");                 //--- Вывод информации
@@ -125,12 +117,12 @@ public class HelloController {
                         FileWriter myFile = new FileWriter(PATH + "\\" + nameFolder.getText() + ".txt");
                         myFile.write(textArea.getText().trim());
                         myFile.close();
+                        if (checkNameFolder(nameFolder.getText())) {
+                            checkAllFolders.setText(checkAllFolders.getText() + nameFolder.getText() + "\n");
+                        }
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
-                    //rowList.clear();
-                    rowList.add(nameFolder.getText());
-                    allFolders.setItems(rowList);
 
                 }
             } else {
