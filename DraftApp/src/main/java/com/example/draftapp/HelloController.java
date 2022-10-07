@@ -96,7 +96,7 @@ public class HelloController {
                 String s = nameFolder.getText() + ".txt";
 
                 //--------------------------------------
-                if (checkNameFolder(s)) {
+                if (!checkNameFolder(s)) {
                     Path reader = Path.of(PATH + "\\" + nameFolder.getText() + ".txt");
                     try {
                         List<String> list = Files.readAllLines(reader);
@@ -117,7 +117,7 @@ public class HelloController {
                         FileWriter myFile = new FileWriter(PATH + "\\" + nameFolder.getText() + ".txt");
                         myFile.write(textArea.getText().trim());
                         myFile.close();
-                        if (checkNameFolder(nameFolder.getText())) {
+                        if (!checkNameFolder(nameFolder.getText())) {
                             checkAllFolders.setText(checkAllFolders.getText() + nameFolder.getText() + "\n");
                         }
                     } catch (IOException ex) {
@@ -135,7 +135,7 @@ public class HelloController {
             String s = nameFolder.getText() + ".txt";
 
             if (!nameFolder.getText().equals("")) {
-                if (checkNameFolder(s)) {
+                if (!checkNameFolder(s)) {
                     try {
                         FileWriter writer = new FileWriter(PATH + "\\" + nameFolder.getText() + ".txt");
                         writer.write(textArea.getText().trim());
